@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://accounts.google.com https://cdn.jsdelivr.net https://unpkg.com https://maps.googleapis.com https://maps.gstatic.com; connect-src 'self' http://localhost:3001 https://accounts.google.com https://www.googleapis.com https://maps.googleapis.com https://opensky-network.org https://raw.githubusercontent.com https://outlook.live.com https://outlook.office.com https://outlook.office365.com https://unpkg.com http://localhost:* ws://localhost:* blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; object-src 'none'; base-uri 'self';">
+  <title>THE HULL - CFO Battlestation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+<script>
+  // Define initMap before Google Maps loads
+  window.initMap = function() {
+    console.log('Google Maps API loaded');
+  };
+</script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAp79EazGo3naBND0vdSbKwEP9T7cl7Nso&callback=initMap"></script></head>
+<body>
+  <!-- Main Container -->
+  <div class="battlestation">
+
+    <!-- Top Nav Bar -->
+    <div class="nav-bar">
+      <div class="nav-left">
+        <div class="logo-container">
+          <img src="Assets/Admiral.png" class="admiral-logo" alt="Admiral">
+        </div>
+      </div>
+      <div class="nav-center">
+        <button class="nav-btn active" data-view="dashboard">
+          <span class="icon">📊</span>
+          <span>DASHBOARD</span>
+        </button>
+        <button class="nav-btn" data-view="email">
+          <span class="icon">📧</span>
+          <span>EMAIL</span>
+        </button>
+        <button class="nav-btn" data-view="calendar">
+          <span class="icon">📅</span>
+          <span>CALENDAR</span>
+        </button>
+        <button class="nav-btn" data-view="map">
+          <span class="icon">🗺️</span>
+          <span>WORLD MAP</span>
+        </button>
+        <button class="nav-btn" data-view="files">
+          <span class="icon">📁</span>
+          <span>FILES</span>
+        </button>
+        <button class="nav-btn" data-view="crm">
+          <span class="icon">📈</span>
+          <span>CRM PIPELINE</span>
+        </button>
+      </div>
+      <div class="nav-right">
+        <div class="timezone-display">
+          <span class="timezone-city" id="timezoneCity">LOCAL</span>
+          <button class="timezone-btn" id="timezoneBtn" title="Change Timezone">🌍</button>
+        </div>
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="date" id="date">LOADING...</div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+
+      <!-- Left Sidebar - Collapsible Menus -->
+      <div class="sidebar">
+        <!-- People Section Header -->
+        <div class="sidebar-section-header">
+          <span>PEOPLE</span>
+          <img src="Assets/People.png" class="section-header-icon" alt="People">
+        </div>
+
+        <!-- Clients Menu -->
+        <div class="sidebar-menu">
+          <div class="sidebar-header collapsible" id="clientsHeader">
+            <span class="sidebar-title">CLIENTS</span>
+            <div class="header-controls">
+              <button class="add-client-btn" id="addClientBtn">+</button>
+              <span class="collapse-icon">▼</span>
+            </div>
+          </div>
+          <div class="client-list collapsible-content" id="clientList">
+            <!-- Clients will be added here -->
+          </div>
+        </div>
+
+        <!-- Employees Menu -->
+        <div class="sidebar-menu">
+          <div class="sidebar-header collapsible" id="employeesHeader">
+            <span class="sidebar-title">EMPLOYEES</span>
+            <div class="header-controls">
+              <button class="add-employee-btn" id="addEmployeeBtn">+</button>
+              <span class="collapse-icon">▼</span>
+            </div>
+          </div>
+          <div class="employee-list collapsible-content" id="employeeList">
+            <!-- Bookkeepers -->
+            <div class="employee-category">
+              <div class="category-header" data-category="bookkeepers">
+                <span class="category-icon">📚</span>
+                <span class="category-name">Bookkeepers</span>
+                <span class="category-count" id="bookkeepersCount">0</span>
+              </div>
+              <div class="category-items" id="bookkeepersItems">
+                <!-- Bookkeeper items -->
+              </div>
+            </div>
+            <!-- Controllers -->
+            <div class="employee-category">
+              <div class="category-header" data-category="controllers">
+                <span class="category-icon">📊</span>
+                <span class="category-name">Controllers</span>
+                <span class="category-count" id="controllersCount">0</span>
+              </div>
+              <div class="category-items" id="controllersItems">
+                <!-- Controller items -->
+              </div>
+            </div>
+            <!-- Fractional CFOs -->
+            <div class="employee-category">
+              <div class="category-header" data-category="cfos">
+                <span class="category-icon">💼</span>
+                <span class="category-name">Fractional CFOs</span>
+                <span class="category-count" id="cfosCount">0</span>
+              </div>
+              <div class="category-items" id="cfosItems">
+                <!-- CFO items -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRM Pipe Menu -->
+        <div class="sidebar-menu">
+          <div class="sidebar-header collapsible" id="crmPipeHeader">
+            <span class="sidebar-title">CRM PIPE</span>
+            <div class="header-controls">
+              <button class="add-crmpipe-btn" id="addCrmPipeBtn">+</button>
+              <span class="collapse-icon">▼</span>
+            </div>
+          </div>
+          <div class="crmpipe-list collapsible-content" id="crmPipeList">
+            <!-- CRM Pipe items will be added here -->
+          </div>
+        </div>
+
+        <!-- LinkedIn Menu -->
+        <div class="sidebar-menu">
+          <div class="sidebar-header collapsible" id="linkedinHeader">
+            <span class="sidebar-title">LINKEDIN</span>
+            <div class="header-controls">
+              <span class="collapse-icon">▼</span>
+            </div>
+          </div>
+          <div class="linkedin-sidebar-content collapsible-content" id="linkedinSidebarContent">
+            <div class="linkedin-sidebar-buttons">
+              <button class="linkedin-sidebar-btn" data-url="https://www.linkedin.com/feed/">
+                <span class="linkedin-btn-icon">📰</span>
+                <span class="linkedin-btn-label">Feed</span>
+              </button>
+              <button class="linkedin-sidebar-btn" data-url="https://www.linkedin.com/post/new/">
+                <span class="linkedin-btn-icon">✏️</span>
+                <span class="linkedin-btn-label">Post</span>
+              </button>
+              <button class="linkedin-sidebar-btn" data-url="https://www.linkedin.com/messaging/">
+                <span class="linkedin-btn-icon">💬</span>
+                <span class="linkedin-btn-label">Messages</span>
+              </button>
+              <button class="linkedin-sidebar-btn" data-url="https://www.linkedin.com/mynetwork/">
+                <span class="linkedin-btn-icon">👥</span>
+                <span class="linkedin-btn-label">Connections</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Views -->
+      <div class="content-area">
+
+        <!-- Dashboard View -->
+        <div class="view active" id="dashboard-view">
+          <div class="dashboard-grid">
+
+            <!-- AI Chat Interface (Left Column - Full Height) -->
+            <div class="panel ai-chat-panel">
+              <div class="panel-header">
+                <span class="panel-title">ADMIRAL</span>
+                <button class="panel-btn" id="clearChatBtn">CLEAR</button>
+              </div>
+              <div class="panel-content ai-chat-content">
+                <div class="chat-messages" id="chatMessages">
+                  <div class="chat-message assistant">
+                    <div class="message-avatar"><img src="Assets/Admiral.png" class="admiral-avatar" alt="Admiral"></div>
+                    <div class="message-bubble">
+                      <div class="message-text">Hello! I'm your AI assistant. I can help you with:</div>
+                      <ul class="message-list">
+                        <li>Financial analysis and insights</li>
+                        <li>Client data summaries</li>
+                        <li>Calendar management</li>
+                        <li>Drafting emails and reports</li>
+                      </ul>
+                      <div class="message-text">What can I help you with today?</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-input-area">
+                  <textarea class="chat-input chat-textarea" id="chatInput" placeholder="Ask me anything..." rows="6"></textarea>
+                  <div class="chat-buttons">
+                    <button class="chat-context-btn" id="readEmailsBtn" title="Load emails into AI context">📧 EMAILS</button>
+                    <button class="chat-context-btn" id="readCalendarBtn" title="Load calendar into AI context">📅 CALENDAR</button>
+                    <button class="chat-upload-btn" id="chatUploadBtn">UPLOAD</button>
+                    <button class="chat-send-btn" id="chatSendBtn">SEND</button>
+                  </div>
+                  <input type="file" id="chatFileInput" style="display: none;" multiple accept="image/*,.pdf,.txt,.doc,.docx,.xls,.xlsx,.csv">
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column - Call Center + Today's Schedule -->
+            <div class="dashboard-right-column">
+              <!-- Call Center / Recording Studio -->
+              <div class="panel call-center-panel">
+                <div class="panel-header">
+                  <span class="panel-title">CALL CENTER</span>
+                </div>
+                <div class="panel-content">
+                  <div class="call-actions">
+                    <button class="call-btn audio-btn" id="startAudioCall">
+                      <span class="call-icon">📞</span>
+                      <span class="call-text">Audio Call</span>
+                    </button>
+                    <div class="call-btn-wrapper">
+                      <button class="call-btn video-btn" id="startVideoCall">
+                        <span class="call-icon">📹</span>
+                        <span class="call-text">Video Call</span>
+                      </button>
+                      <div class="video-call-dropdown" id="videoCallDropdown">
+                        <div class="dropdown-item" data-platform="zoom">
+                          <div class="dropdown-item-top">
+                            <span class="dropdown-icon">🎥</span>
+                            <span class="dropdown-label">Zoom</span>
+                          </div>
+                          <span class="dropdown-invite" data-invite="zoom">Invite</span>
+                        </div>
+                        <div class="dropdown-item" data-platform="teams">
+                          <div class="dropdown-item-top">
+                            <span class="dropdown-icon">👥</span>
+                            <span class="dropdown-label">Teams</span>
+                          </div>
+                          <span class="dropdown-invite" data-invite="teams">Invite</span>
+                        </div>
+                        <div class="dropdown-item" data-platform="meet">
+                          <div class="dropdown-item-top">
+                            <span class="dropdown-icon">📺</span>
+                            <span class="dropdown-label">Google Meet</span>
+                          </div>
+                          <span class="dropdown-invite" data-invite="meet">Invite</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="call-platforms">
+                    <div class="platform-btn record-btn" id="recordBtn">
+                      <span class="platform-icon record-icon" id="recordIcon">⏺️</span>
+                      <span class="platform-name" id="recordText">Record</span>
+                    </div>
+                    <div class="platform-btn transcribe-btn" id="transcribeBtn">
+                      <span class="platform-icon">📝</span>
+                      <span class="platform-name">Transcribe</span>
+                    </div>
+                  </div>
+                  <div class="recording-status" id="recordingStatus" style="display: none;">
+                    <div class="recording-timer" id="recordingTimer">00:00</div>
+                    <div class="recording-indicator">
+                      <span class="recording-dot"></span>
+                      Recording in progress...
+                    </div>
+                  </div>
+                  <div class="recent-calls">
+                    <div class="recent-calls-header">RECENT CALLS / RECORDINGS</div>
+                    <div id="recentRecordingsList">
+                      <div class="call-item">
+                        <span class="call-client">TechCorp</span>
+                        <span class="call-time">10:30 AM</span>
+                        <span class="call-duration">45m</span>
+                      </div>
+                      <div class="call-item">
+                        <span class="call-client">StartupXYZ</span>
+                        <span class="call-time">Yesterday</span>
+                        <span class="call-duration">30m</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Today's Calendar Preview -->
+              <div class="panel calendar-preview-panel">
+                <div class="panel-header">
+                  <span class="panel-title">TODAY'S SCHEDULE</span>
+                  <button class="panel-btn" id="viewFullCalendarBtn">VIEW ALL</button>
+                </div>
+                <div class="panel-content" id="calendarPreview">
+                  <!-- Events loaded dynamically by updateTodaysSchedule() -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Email View -->
+        <div class="view" id="email-view">
+          <div class="email-view-container">
+            <div class="email-view-header">
+              <h1>EMAIL</h1>
+              <div class="email-view-actions">
+                <button class="panel-btn" id="emailRefreshBtn">↻ REFRESH</button>
+                <button class="panel-btn compose-btn" id="emailComposeBtn">✉️ COMPOSE</button>
+              </div>
+            </div>
+
+            <!-- Gmail Login Section -->
+            <div class="email-login-section" id="emailLoginSection">
+              <div class="email-login-content">
+                <div class="email-logo">📧</div>
+                <div class="email-login-title">Connect Your Gmail Account</div>
+                <div class="email-login-text">Sign in with Google to access your emails</div>
+                <button class="gmail-login-btn" id="emailGmailLoginBtn">
+                  <span class="google-icon">G</span>
+                  <span>Sign in with Google</span>
+                </button>
+                <div class="email-login-footer">Secure OAuth 2.0 Authentication</div>
+              </div>
+            </div>
+
+            <!-- Email Main Content (shown after login) -->
+            <div class="email-main-view" id="emailMainView" style="display: none;">
+              <div class="email-sidebar">
+                <div class="email-folders" id="emailFoldersContainer">
+                  <!-- System folders -->
+                  <div class="folder-section-label">FOLDERS</div>
+                  <button class="email-folder active" data-folder="inbox" data-label-id="INBOX">
+                    <span class="folder-icon">📥</span>
+                    <span class="folder-name">Inbox</span>
+                    <span class="folder-count" id="inboxCount" style="display: none;"></span>
+                  </button>
+                  <button class="email-folder" data-folder="starred" data-label-id="STARRED">
+                    <span class="folder-icon">⭐</span>
+                    <span class="folder-name">Starred</span>
+                  </button>
+                  <button class="email-folder" data-folder="drafts" data-label-id="DRAFT">
+                    <span class="folder-icon">📝</span>
+                    <span class="folder-name">Drafts</span>
+                  </button>
+                  <button class="email-folder" data-folder="spam" data-label-id="SPAM">
+                    <span class="folder-icon">⚠️</span>
+                    <span class="folder-name">Spam</span>
+                  </button>
+                  <button class="email-folder" data-folder="trash" data-label-id="TRASH">
+                    <span class="folder-icon">🗑️</span>
+                    <span class="folder-name">Trash</span>
+                  </button>
+                  <!-- Divider between folders and labels -->
+                  <div class="folder-divider" id="labelsDivider" style="display: none; height: 2px; background: #00ff41; margin: 15px 0; opacity: 0.5;"></div>
+                  <!-- Custom labels section -->
+                  <div class="folder-section-label" id="customLabelsHeader" style="display: none;">LABELS</div>
+                  <div id="customLabelsContainer"></div>
+                </div>
+              </div>
+
+              <div class="email-list-panel">
+                <div class="email-search-bar">
+                  <input type="text" class="email-search-input" id="emailSearchInput" placeholder="🔍 Search emails...">
+                </div>
+                <div class="email-list" id="emailListView">
+                  <!-- Emails will be loaded here -->
+                  <div class="email-placeholder">
+                    <span>Loading emails...</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="email-preview-panel" id="emailPreviewPanel">
+                <div class="email-preview-placeholder">
+                  <span>Select an email to preview</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar View (Full Calendar) -->
+        <div class="view" id="calendar-view">
+          <div class="calendar-container">
+            <div class="calendar-left-panel">
+              <div class="calendar-toolbar">
+                <button id="addCalendarBtn" class="toolbar-btn">
+                  <span>📅 Google Calendar</span>
+                </button>
+                <button id="addOutlookBtn" class="toolbar-btn">
+                  <span>📅 Outlook Calendar</span>
+                </button>
+              </div>
+              <button id="addEventBtn" class="add-event-btn">+ Add Event</button>
+              <div id="dayCalendar"></div>
+            </div>
+            <div id="monthCalendar"></div>
+          </div>
+        </div>
+
+        <!-- World Map View -->
+        <div class="view" id="map-view">
+          <div class="map-container">
+            <!-- Interactive Google Map -->
+            <div class="world-map" id="worldMap"></div>
+
+            <!-- Flight Panels Row (Input Left, Tracked Flights Right) -->
+            <div class="flight-panels-row">
+              <!-- Flight Input Panel -->
+              <div class="flight-control-panel">
+                <div class="flight-input-section">
+                  <div class="flight-input-header">TRACK A FLIGHT</div>
+                  <div class="flight-input-fields">
+                    <div class="flight-input-group">
+                      <label>Departure City</label>
+                      <input type="text" id="flightDepartureCity" placeholder="e.g. Phoenix" class="flight-input">
+                    </div>
+                    <div class="flight-input-group">
+                      <label>Arrival City</label>
+                      <input type="text" id="flightArrivalCity" placeholder="e.g. Maui" class="flight-input">
+                    </div>
+                    <div class="flight-input-group">
+                      <label>Departure Time</label>
+                      <input type="text" id="flightDepartureTime" placeholder="e.g. 10:30 AM" class="flight-input">
+                    </div>
+                    <div class="flight-input-group">
+                      <label>Arrival Time</label>
+                      <input type="text" id="flightArrivalTime" placeholder="e.g. 2:45 PM" class="flight-input">
+                    </div>
+                    <div class="flight-input-group">
+                      <label>Flight Number (optional)</label>
+                      <input type="text" id="flightNumber" placeholder="e.g. AA432" class="flight-input">
+                    </div>
+                  </div>
+                  <button class="flight-add-btn" id="addFlightBtn">ADD FLIGHT</button>
+                </div>
+              </div>
+
+              <!-- Tracked Flights Panel -->
+              <div class="tracked-flights-panel">
+                <div class="flight-info-header">
+                  <span>TRACKED FLIGHTS</span>
+                  <button class="panel-btn" id="clearAllFlightsBtn">CLEAR ALL</button>
+                </div>
+                <div class="tracked-flights-list" id="trackedFlightsList">
+                  <div class="no-flights-message">No flights tracked. Add a flight using the form.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Files View -->
+        <div class="view" id="files-view">
+          <div class="files-container">
+            <div class="files-header">
+              <div class="breadcrumb">
+                <span class="breadcrumb-item active">📁 All Files</span>
+                <span class="storage-path" id="storagePath" title="Click to open folder">Loading...</span>
+              </div>
+              <div class="files-actions">
+                <button class="storage-btn add-file-btn" id="addMiscFileBtn" title="Add file to Misc folder">Add File</button>
+                <input type="file" id="miscFileInput" multiple style="display: none;">
+                <button class="storage-btn" id="changeStorageBtn" title="Change storage folder">Change Folder</button>
+                <button class="storage-btn" id="openStorageBtn" title="Open storage folder in Explorer">Open Folder</button>
+              </div>
+            </div>
+            <!-- Integrations Bar -->
+            <div class="integrations-bar">
+              <div class="integration-item">
+                <span class="integration-icon">📗</span>
+                <span class="integration-label">Google Sheets:</span>
+                <input type="text" id="sheetsUrlInput" class="integration-input" placeholder="Paste Google Sheets URL...">
+                <button class="integration-btn" id="connectSheetsBtn">Connect</button>
+              </div>
+              <div class="integration-divider"></div>
+              <div class="integration-item">
+                <span class="integration-icon">📒</span>
+                <span class="integration-label">QuickBooks:</span>
+                <button class="integration-btn" id="quickbooksLoginBtn">Connect QuickBooks</button>
+              </div>
+            </div>
+            <!-- Filter Bar -->
+            <div class="files-filter-bar">
+              <div class="filter-group">
+                <label class="filter-label">Filter by:</label>
+                <select class="filter-select" id="fileOwnerTypeFilter">
+                  <option value="all">All Types</option>
+                  <option value="client">Clients</option>
+                  <option value="employee">Employees</option>
+                  <option value="lead">Leads</option>
+                  <option value="sheets">Google Sheets</option>
+                  <option value="transcription">Transcriptions</option>
+                  <option value="misc">Misc</option>
+                </select>
+                <select class="filter-select" id="fileOwnerFilter">
+                  <option value="all">All Folders</option>
+                </select>
+              </div>
+              <div class="search-group">
+                <input type="text" class="search-input" placeholder="Search files..." id="fileSearch">
+                <button class="search-btn" id="fileSearchBtn">Search</button>
+                <button class="search-btn clear-btn" id="fileClearSearchBtn">Clear</button>
+              </div>
+              <div class="filter-stats">
+                <span id="fileFilterStats">0 files</span>
+              </div>
+            </div>
+            <div class="files-grid" id="filesGrid">
+              <!-- Files will be populated dynamically from storage -->
+              <div class="no-files-message">No files uploaded yet. Attach files to clients, employees, or CRM leads to see them here.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CRM Pipeline View -->
+        <div class="view" id="crm-view">
+          <div class="crm-container">
+            <div class="crm-header">
+              <div class="crm-title">
+                <span class="crm-icon">📈</span>
+                <span>CRM PIPELINE</span>
+              </div>
+              <div class="crm-actions">
+                <button class="action-btn" id="addLeadBtn">+ ADD LEAD</button>
+              </div>
+            </div>
+            <div class="pipeline-table-container">
+              <table class="pipeline-table">
+                <thead>
+                  <tr>
+                    <th class="stage-label-col">STAGE</th>
+                    <!-- Lead name columns will be added dynamically -->
+                  </tr>
+                </thead>
+                <tbody id="pipelineBody">
+                  <tr data-stage="5" class="stage-row">
+                    <td class="stage-label">5. SIGNED</td>
+                  </tr>
+                  <tr data-stage="4" class="stage-row">
+                    <td class="stage-label">4. FOLLOW UP</td>
+                  </tr>
+                  <tr data-stage="3" class="stage-row">
+                    <td class="stage-label">3. PROPOSAL</td>
+                  </tr>
+                  <tr data-stage="2" class="stage-row">
+                    <td class="stage-label">2. FIRST CALL</td>
+                  </tr>
+                  <tr data-stage="1" class="stage-row">
+                    <td class="stage-label">1. CONTACT</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Client HUD Overlay -->
+  <div class="hud-overlay" id="hudOverlay">
+    <div class="hud-container hud-scrollable">
+      <div class="hud-header">
+        <div class="hud-title">
+          <span class="hud-client-name" id="hudClientName">CLIENT NAME</span>
+        </div>
+        <div class="hud-actions">
+          <button class="hud-save-btn" id="clientHudSave" title="Save Changes">💾 SAVE</button>
+          <button class="hud-delete-btn" id="hudDelete" title="Delete Client">🗑️ DELETE</button>
+          <button class="hud-close" id="hudClose">✕</button>
+        </div>
+      </div>
+      <div class="hud-content">
+        <!-- Column 1: Photo, Actions, HP -->
+        <div class="hud-column-1">
+          <div class="hud-section">
+            <div class="hud-section-title">📷 PHOTO</div>
+            <div class="hud-section-content hud-photo-container" id="clientHudPhoto">
+              <div class="hud-photo-placeholder">👤</div>
+            </div>
+            <div class="hud-photo-actions">
+              <button type="button" class="hud-photo-upload-btn" id="clientHudPhotoBtn">Upload</button>
+              <button type="button" class="hud-photo-remove-btn" id="clientHudPhotoRemove" style="display: none;">Remove</button>
+              <input type="file" id="clientHudPhotoInput" accept="image/*" style="display: none;">
+            </div>
+          </div>
+          <div class="hud-section hud-quick-actions-section">
+            <div class="hud-section-content hud-actions-row">
+              <button class="hud-action-btn" id="clientCallBtn">📞 Call</button>
+              <button class="hud-action-btn" id="clientEmailBtn">📧 Email</button>
+            </div>
+          </div>
+          <div class="hud-section">
+            <div class="hud-section-title">❤️ HP STATUS</div>
+            <div class="hud-section-content">
+              <div class="hud-hp-bar-container">
+                <div class="hud-hp-input-row">
+                  <input type="number" class="hud-hp-input" id="clientHudHpInput" value="100" min="0" max="100">
+                  <span class="hud-hp-max">/100 HP</span>
+                </div>
+                <div class="hud-hp-bar">
+                  <div class="hud-hp-bar-fill" id="clientHudHpBar" style="width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Column 2: Details -->
+        <div class="hud-column-2">
+          <div class="hud-section" style="height: 100%;">
+            <div class="hud-section-title">💼 DETAILS</div>
+            <div class="hud-section-content hud-form-fields">
+              <div class="hud-form-group">
+                <label class="hud-form-label">Name</label>
+                <input type="text" class="hud-form-input" id="clientHudNameInput" placeholder="Client name">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Location</label>
+                <input type="text" class="hud-form-input" id="clientHudLocationInput" placeholder="Location">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Email</label>
+                <input type="email" class="hud-form-input" id="clientHudEmailInput" placeholder="Email address">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Phone</label>
+                <input type="tel" class="hud-form-input" id="clientHudPhoneInput" placeholder="Phone number">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Preferred Contact</label>
+                <select class="hud-form-input" id="clientHudPreferredContactInput">
+                  <option value="">Select...</option>
+                  <option value="email">Email</option>
+                  <option value="phone">Phone</option>
+                  <option value="text">Text/SMS</option>
+                  <option value="zoom">Zoom</option>
+                  <option value="teams">Microsoft Teams</option>
+                  <option value="meet">Google Meet</option>
+                </select>
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Business</label>
+                <input type="text" class="hud-form-input" id="clientHudBusinessInput" placeholder="Business type">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Revenue</label>
+                <input type="text" class="hud-form-input" id="clientHudRevenueInput" placeholder="e.g., $1M - $5M">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Column 3: Notes -->
+        <div class="hud-column-3">
+          <div class="hud-section" style="height: 100%;">
+            <div class="hud-section-title">📝 NOTES</div>
+            <div class="hud-section-content" style="height: calc(100% - 40px);">
+              <textarea class="hud-form-textarea" id="clientHudNotesInput" rows="8" placeholder="Add notes..." style="height: 100%;"></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- Full Width: Attachments -->
+        <div class="hud-attachments-row">
+          <div class="hud-section">
+            <div class="hud-section-title">📎 ATTACHMENTS</div>
+            <div class="hud-section-content hud-attachments-content" id="clientHudFiles">
+              <div class="hud-item">No files attached</div>
+            </div>
+            <div class="hud-file-actions">
+              <button type="button" class="hud-attach-btn" id="clientHudAttachBtn">+ Attach File</button>
+              <input type="file" id="clientHudFileInput" multiple style="display: none;">
+              <button type="button" class="hud-attach-btn hud-link-btn" id="clientHudAddLinkBtn">🔗 Add Link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Employee HUD Overlay -->
+  <div class="hud-overlay" id="employeeHudOverlay">
+    <div class="hud-container hud-scrollable">
+      <div class="hud-header">
+        <div class="hud-title">
+          <span class="hud-client-name" id="employeeHudName">EMPLOYEE NAME</span>
+        </div>
+        <div class="hud-actions">
+          <button class="hud-save-btn" id="employeeHudSave" title="Save Changes">💾 SAVE</button>
+          <button class="hud-delete-btn" id="employeeHudDelete" title="Delete Employee">🗑️ DELETE</button>
+          <button class="hud-close" id="employeeHudClose">✕</button>
+        </div>
+      </div>
+      <div class="hud-content">
+        <!-- Column 1: Photo, Actions, HP -->
+        <div class="hud-column-1">
+          <div class="hud-section">
+            <div class="hud-section-title">📷 PHOTO</div>
+            <div class="hud-section-content hud-photo-container" id="employeeHudPhoto">
+              <div class="hud-photo-placeholder">👤</div>
+            </div>
+            <div class="hud-photo-actions">
+              <button type="button" class="hud-photo-upload-btn" id="employeeHudPhotoBtn">Upload</button>
+              <button type="button" class="hud-photo-remove-btn" id="employeeHudPhotoRemove" style="display: none;">Remove</button>
+              <input type="file" id="employeeHudPhotoInput" accept="image/*" style="display: none;">
+            </div>
+          </div>
+          <div class="hud-section hud-quick-actions-section">
+            <div class="hud-section-content hud-actions-row">
+              <button class="hud-action-btn" id="employeeCallBtn">📞 Call</button>
+              <button class="hud-action-btn" id="employeeEmailBtn">📧 Email</button>
+            </div>
+          </div>
+          <div class="hud-section">
+            <div class="hud-section-title">❤️ HP STATUS</div>
+            <div class="hud-section-content">
+              <div class="hud-hp-bar-container">
+                <div class="hud-hp-input-row">
+                  <input type="number" class="hud-hp-input" id="employeeHudHpInput" value="100" min="0" max="100">
+                  <span class="hud-hp-max">/100 HP</span>
+                </div>
+                <div class="hud-hp-bar">
+                  <div class="hud-hp-bar-fill" id="employeeHudHpBar" style="width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Column 2: Details -->
+        <div class="hud-column-2">
+          <div class="hud-section" style="height: 100%;">
+            <div class="hud-section-title">💼 DETAILS</div>
+            <div class="hud-section-content hud-form-fields">
+              <div class="hud-form-group">
+                <label class="hud-form-label">Name</label>
+                <input type="text" class="hud-form-input" id="employeeHudNameInput" placeholder="Employee name">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Location</label>
+                <input type="text" class="hud-form-input" id="employeeHudLocationInput" placeholder="Location">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Job Title</label>
+                <input type="text" class="hud-form-input" id="employeeHudTitleInput" placeholder="Job title">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Category</label>
+                <select class="hud-form-select" id="employeeHudCategoryInput">
+                  <option value="bookkeepers">Bookkeeper</option>
+                  <option value="controllers">Controller</option>
+                  <option value="cfos">Fractional CFO</option>
+                </select>
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Email</label>
+                <input type="email" class="hud-form-input" id="employeeHudEmailInput" placeholder="Email address">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Phone</label>
+                <input type="tel" class="hud-form-input" id="employeeHudPhoneInput" placeholder="Phone number">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Compensation</label>
+                <input type="text" class="hud-form-input" id="employeeHudCompensationInput" placeholder="e.g., $75,000/year">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Column 3: Notes -->
+        <div class="hud-column-3">
+          <div class="hud-section" style="height: 100%;">
+            <div class="hud-section-title">📝 NOTES</div>
+            <div class="hud-section-content" style="height: calc(100% - 40px);">
+              <textarea class="hud-form-textarea" id="employeeHudNotesInput" rows="8" placeholder="Add notes..." style="height: 100%;"></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- Full Width: Attachments -->
+        <div class="hud-attachments-row">
+          <div class="hud-section">
+            <div class="hud-section-title">📎 ATTACHMENTS</div>
+            <div class="hud-section-content hud-attachments-content" id="employeeHudFiles">
+              <div class="hud-item">No files attached</div>
+            </div>
+            <div class="hud-file-actions">
+              <button type="button" class="hud-attach-btn" id="employeeHudAttachBtn">+ Attach File</button>
+              <input type="file" id="employeeHudFileInput" multiple style="display: none;">
+              <button type="button" class="hud-attach-btn hud-link-btn" id="employeeHudAddLinkBtn">🔗 Add Link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRM Pipe HUD Overlay -->
+  <div class="hud-overlay" id="crmPipeHudOverlay">
+    <div class="hud-container hud-scrollable">
+      <div class="hud-header">
+        <div class="hud-title">
+          <span class="hud-client-name" id="crmPipeHudName">LEAD NAME</span>
+        </div>
+        <div class="hud-actions">
+          <button class="hud-save-btn" id="crmPipeHudSave" title="Save Changes">💾 SAVE</button>
+          <button class="hud-delete-btn" id="crmPipeHudDelete" title="Delete Lead">🗑️ DELETE</button>
+          <button class="hud-close" id="crmPipeHudClose">✕</button>
+        </div>
+      </div>
+      <div class="hud-content">
+        <!-- Column 1: Photo, Actions, HP -->
+        <div class="hud-column-1">
+          <div class="hud-section">
+            <div class="hud-section-title">📷 PHOTO</div>
+            <div class="hud-section-content hud-photo-container" id="crmPipeHudPhoto">
+              <div class="hud-photo-placeholder">👤</div>
+            </div>
+            <div class="hud-photo-actions">
+              <button type="button" class="hud-photo-upload-btn" id="crmPipeHudPhotoBtn">Upload</button>
+              <button type="button" class="hud-photo-remove-btn" id="crmPipeHudPhotoRemove" style="display: none;">Remove</button>
+              <input type="file" id="crmPipeHudPhotoInput" accept="image/*" style="display: none;">
+            </div>
+          </div>
+          <div class="hud-section hud-quick-actions-section">
+            <div class="hud-section-content hud-actions-row">
+              <button class="hud-action-btn" id="crmPipeCallBtn">📞 Call</button>
+              <button class="hud-action-btn" id="crmPipeEmailBtn">📧 Email</button>
+            </div>
+          </div>
+          <div class="hud-section">
+            <div class="hud-section-title">❤️ HP STATUS</div>
+            <div class="hud-section-content">
+              <div class="hud-hp-bar-container">
+                <div class="hud-hp-input-row">
+                  <input type="number" class="hud-hp-input" id="crmPipeHudHpInput" value="100" min="0" max="100">
+                  <span class="hud-hp-max">/100 HP</span>
+                </div>
+                <div class="hud-hp-bar">
+                  <div class="hud-hp-bar-fill" id="crmPipeHudHpBar" style="width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Column 2: Details -->
+        <div class="hud-column-2">
+          <div class="hud-section" style="height: 100%;">
+            <div class="hud-section-title">💼 DETAILS</div>
+            <div class="hud-section-content hud-form-fields">
+              <div class="hud-form-group">
+                <label class="hud-form-label">Name</label>
+                <input type="text" class="hud-form-input" id="crmPipeHudNameInput" placeholder="Lead name">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Location</label>
+                <input type="text" class="hud-form-input" id="crmPipeHudLocationInput" placeholder="Location">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Company</label>
+                <input type="text" class="hud-form-input" id="crmPipeHudCompanyInput" placeholder="Company name">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Email</label>
+                <input type="email" class="hud-form-input" id="crmPipeHudEmailInput" placeholder="Email address">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Phone</label>
+                <input type="tel" class="hud-form-input" id="crmPipeHudPhoneInput" placeholder="Phone number">
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Pipeline Stage</label>
+                <select class="hud-form-select" id="crmPipeHudStageInput">
+                  <option value="1">1. CONTACT</option>
+                  <option value="2">2. FIRST CALL</option>
+                  <option value="3">3. PROPOSAL</option>
+                  <option value="4">4. FOLLOW UP</option>
+                  <option value="5">5. SIGNED</option>
+                </select>
+              </div>
+              <div class="hud-form-group">
+                <label class="hud-form-label">Deal Value ($)</label>
+                <input type="number" class="hud-form-input" id="crmPipeHudValueInput" placeholder="e.g., 50000">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Column 3: Notes -->
+        <div class="hud-column-3">
+          <div class="hud-section" style="height: 100%;">
+            <div class="hud-section-title">📝 NOTES</div>
+            <div class="hud-section-content" style="height: calc(100% - 40px);">
+              <textarea class="hud-form-textarea" id="crmPipeHudNotesInput" rows="8" placeholder="Add notes..." style="height: 100%;"></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- Full Width: Attachments -->
+        <div class="hud-attachments-row">
+          <div class="hud-section">
+            <div class="hud-section-title">📎 ATTACHMENTS</div>
+            <div class="hud-section-content hud-attachments-content" id="crmPipeHudFiles">
+              <div class="hud-item">No files attached</div>
+            </div>
+            <div class="hud-file-actions">
+              <button type="button" class="hud-attach-btn" id="crmPipeHudAttachBtn">+ Attach File</button>
+              <input type="file" id="crmPipeHudFileInput" multiple style="display: none;">
+              <button type="button" class="hud-attach-btn hud-link-btn" id="crmPipeHudAddLinkBtn">🔗 Add Link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals from original calendar -->
+  <div id="googleModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Import Google Calendar</h2>
+        <button class="close-btn" id="closeGoogleModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="calendarId">Calendar ID</label>
+          <input type="text" id="calendarId" placeholder="primary or your-email@gmail.com">
+          <small>
+            <strong>Setup required:</strong><br>
+            1. Authenticate: Visit <a href="http://localhost:3001/auth" target="_blank">http://localhost:3001/auth</a><br>
+            2. Enter email address
+          </small>
+        </div>
+        <div class="form-group">
+          <label>Added Calendars</label>
+          <ul id="addedCalendarsList" style="list-style: none; padding: 0; margin: 0;"></ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="importCalendar" class="btn btn-primary">Import</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="outlookModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Import Outlook Calendar</h2>
+        <button class="close-btn" id="closeOutlookModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Status</label>
+          <div id="outlookStatus">No calendars added</div>
+        </div>
+        <div class="form-group">
+          <label for="outlookIcalUrl">Outlook iCal URL</label>
+          <input type="text" id="outlookIcalUrl" placeholder="https://outlook.live.com/owa/calendar/...">
+        </div>
+        <div class="form-group">
+          <button id="outlookImportBtn" class="btn btn-primary">Import Calendar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">New Event</h2>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="eventTitle">Title</label>
+          <input type="text" id="eventTitle" placeholder="Event title">
+        </div>
+        <div class="form-group">
+          <label for="eventStart">Start</label>
+          <input type="datetime-local" id="eventStart">
+        </div>
+        <div class="form-group">
+          <label for="eventEnd">End</label>
+          <input type="datetime-local" id="eventEnd">
+        </div>
+        <div class="form-group">
+          <label for="eventNotes">Notes</label>
+          <textarea id="eventNotes" placeholder="Add notes..." rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Color</label>
+          <div class="color-picker">
+            <button class="color-btn" data-color="#3788d8" style="background-color: #3788d8;"></button>
+            <button class="color-btn" data-color="#28a745" style="background-color: #28a745;"></button>
+            <button class="color-btn" data-color="#dc3545" style="background-color: #dc3545;"></button>
+            <button class="color-btn" data-color="#ffc107" style="background-color: #ffc107;"></button>
+            <button class="color-btn" data-color="#6f42c1" style="background-color: #6f42c1;"></button>
+            <button class="color-btn" data-color="#fd7e14" style="background-color: #fd7e14;"></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="trackEventFlight" class="btn btn-flight" style="display: none;" title="Track this as a flight">✈️ Track Flight</button>
+        <button id="deleteEvent" class="btn btn-danger" style="display: none;">Delete</button>
+        <button id="saveEvent" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compose Email Modal -->
+  <div id="composeEmailModal" class="modal">
+    <div class="modal-content compose-modal">
+      <div class="modal-header">
+        <h2>✉️ Compose Email</h2>
+        <button class="close-btn" id="closeComposeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="emailTo">To</label>
+          <input type="email" id="emailTo" placeholder="recipient@example.com">
+        </div>
+        <div class="form-group">
+          <label for="emailSubject">Subject</label>
+          <input type="text" id="emailSubject" placeholder="Email subject">
+        </div>
+        <div class="form-group">
+          <label for="emailBody">Message</label>
+          <textarea id="emailBody" rows="10" placeholder="Write your email..."></textarea>
+        </div>
+        <div class="ai-assist-section">
+          <button class="ai-assist-btn" id="aiDraftBtn">
+            <span>🤖 AI DRAFT</span>
+          </button>
+          <small>Let AI help you write this email</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="saveDraftBtn">SAVE DRAFT</button>
+        <button id="sendEmailBtn" class="btn btn-primary">SEND EMAIL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Detail Modal -->
+  <div id="emailDetailModal" class="modal">
+    <div class="modal-content email-detail-modal">
+      <div class="modal-header">
+        <div class="email-detail-header">
+          <div class="email-detail-from">
+            <span class="sender-avatar-large" id="emailDetailAvatar">?</span>
+            <div>
+              <div class="email-detail-sender" id="emailDetailFrom">Loading...</div>
+              <div class="email-detail-address" id="emailDetailAddress"></div>
+            </div>
+          </div>
+          <button class="close-btn" id="closeEmailDetailModal">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body email-detail-body">
+        <div class="email-detail-subject" id="emailDetailSubject">Loading...</div>
+        <div class="email-detail-meta">
+          <span id="emailDetailDate">📅 Loading...</span>
+        </div>
+        <div class="email-detail-content" id="emailDetailBody">
+          <p>Loading email content...</p>
+        </div>
+      </div>
+      <div class="modal-footer email-actions">
+        <button class="btn btn-primary" id="replyEmailBtn">↩️ REPLY</button>
+        <button class="btn btn-secondary" id="forwardEmailBtn">➡️ FORWARD</button>
+        <button class="btn btn-danger" id="deleteEmailBtn">🗑️ DELETE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Client Modal -->
+  <div id="addClientModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Client</h2>
+        <button class="close-btn" id="closeAddClientModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="photo-upload-container">
+            <div class="hp-bar-container">
+              <input type="number" class="hp-current" id="clientHpCurrent" value="100" min="0" max="100">
+              <span class="hp-separator">/</span>
+              <span class="hp-max">100 HP</span>
+              <div class="hp-bar">
+                <div class="hp-bar-fill" id="clientHpBar" style="width: 100%;"></div>
+              </div>
+            </div>
+            <div class="photo-preview" id="clientPhotoPreview">
+              <span class="photo-preview-placeholder">👤</span>
+            </div>
+            <button type="button" class="photo-upload-btn" id="clientPhotoBtn">Upload Photo</button>
+            <button type="button" class="photo-remove-btn" id="clientPhotoRemove" style="display: none;">Remove</button>
+            <input type="file" id="clientPhotoInput" accept="image/*" style="display: none;">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="clientName">Client Name</label>
+          <input type="text" id="clientName" placeholder="e.g., TechCorp Inc.">
+        </div>
+        <div class="form-group">
+          <label for="clientLocation">Location</label>
+          <input type="text" id="clientLocation" placeholder="e.g., New York, USA">
+        </div>
+        <div class="form-group">
+          <label for="clientEmail">Email</label>
+          <input type="email" id="clientEmail" placeholder="e.g., contact@company.com">
+        </div>
+        <div class="form-group">
+          <label for="clientPhone">Phone</label>
+          <input type="tel" id="clientPhone" placeholder="e.g., (555) 123-4567">
+        </div>
+        <div class="form-group">
+          <label for="clientPreferredContact">Preferred Contact</label>
+          <select id="clientPreferredContact">
+            <option value="">Select preferred contact method...</option>
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+            <option value="text">Text/SMS</option>
+            <option value="zoom">Zoom</option>
+            <option value="teams">Microsoft Teams</option>
+            <option value="meet">Google Meet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="clientBusiness">Business</label>
+          <input type="text" id="clientBusiness" placeholder="e.g., Software Development">
+        </div>
+        <div class="form-group">
+          <label for="clientRevenue">Revenue</label>
+          <input type="text" id="clientRevenue" placeholder="e.g., $1M - $5M">
+        </div>
+        <div class="form-group">
+          <label for="clientColor">Color Theme</label>
+          <div class="color-picker">
+            <button class="color-btn" data-color="#3788d8" style="background-color: #3788d8;"></button>
+            <button class="color-btn" data-color="#28a745" style="background-color: #28a745;"></button>
+            <button class="color-btn" data-color="#dc3545" style="background-color: #dc3545;"></button>
+            <button class="color-btn" data-color="#ffc107" style="background-color: #ffc107;"></button>
+            <button class="color-btn" data-color="#6f42c1" style="background-color: #6f42c1;"></button>
+            <button class="color-btn" data-color="#fd7e14" style="background-color: #fd7e14;"></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="clientNotes">Notes</label>
+          <textarea id="clientNotes" rows="3" placeholder="Additional notes about this client..."></textarea>
+        </div>
+        <div class="form-group">
+          <div class="file-attachments-container">
+            <div class="file-attachments-header">
+              <span class="file-attachments-title">ATTACHMENTS</span>
+              <button type="button" class="attach-file-btn" id="clientAttachBtn">+ Attach File</button>
+              <input type="file" id="clientFileInput" multiple style="display: none;">
+            </div>
+            <div class="file-attachments-list" id="clientFilesList">
+              <div class="no-files-message">No files attached</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="saveClient" class="btn btn-primary">Add Client</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Employee Modal -->
+  <div id="addEmployeeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Employee</h2>
+        <button class="close-btn" id="closeAddEmployeeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="photo-upload-container">
+            <div class="hp-bar-container">
+              <input type="number" class="hp-current" id="employeeHpCurrent" value="100" min="0" max="100">
+              <span class="hp-separator">/</span>
+              <span class="hp-max">100 HP</span>
+              <div class="hp-bar">
+                <div class="hp-bar-fill" id="employeeHpBar" style="width: 100%;"></div>
+              </div>
+            </div>
+            <div class="photo-preview" id="employeePhotoPreview">
+              <span class="photo-preview-placeholder">👤</span>
+            </div>
+            <button type="button" class="photo-upload-btn" id="employeePhotoBtn">Upload Photo</button>
+            <button type="button" class="photo-remove-btn" id="employeePhotoRemove" style="display: none;">Remove</button>
+            <input type="file" id="employeePhotoInput" accept="image/*" style="display: none;">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="employeeName">Employee Name</label>
+          <input type="text" id="employeeName" placeholder="e.g., John Smith">
+        </div>
+        <div class="form-group">
+          <label for="employeeLocation">Location</label>
+          <input type="text" id="employeeLocation" placeholder="e.g., Chicago, USA">
+        </div>
+        <div class="form-group">
+          <label for="employeeTitle">Job Title</label>
+          <input type="text" id="employeeTitle" placeholder="e.g., Senior Accountant">
+        </div>
+        <div class="form-group">
+          <label for="employeeCategory">Category</label>
+          <select id="employeeCategory" class="modal-select">
+            <option value="bookkeepers">Bookkeeper</option>
+            <option value="controllers">Controller</option>
+            <option value="cfos">Fractional CFO</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="employeeEmail">Email</label>
+          <input type="email" id="employeeEmail" placeholder="e.g., john@company.com">
+        </div>
+        <div class="form-group">
+          <label for="employeePhone">Phone</label>
+          <input type="tel" id="employeePhone" placeholder="e.g., (555) 123-4567">
+        </div>
+        <div class="form-group">
+          <label for="employeeNotes">Notes</label>
+          <textarea id="employeeNotes" rows="3" placeholder="Additional notes..."></textarea>
+        </div>
+        <div class="form-group">
+          <div class="file-attachments-container">
+            <div class="file-attachments-header">
+              <span class="file-attachments-title">ATTACHMENTS</span>
+              <button type="button" class="attach-file-btn" id="employeeAttachBtn">+ Attach File</button>
+              <input type="file" id="employeeFileInput" multiple style="display: none;">
+            </div>
+            <div class="file-attachments-list" id="employeeFilesList">
+              <div class="no-files-message">No files attached</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="saveEmployee" class="btn btn-primary">Add Employee</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add CRM Pipe Modal -->
+  <div id="addCrmPipeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Add New Lead</h2>
+        <button class="close-btn" id="closeAddCrmPipeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="photo-upload-container">
+            <div class="hp-bar-container">
+              <input type="number" class="hp-current" id="crmPipeHpCurrent" value="100" min="0" max="100">
+              <span class="hp-separator">/</span>
+              <span class="hp-max">100 HP</span>
+              <div class="hp-bar">
+                <div class="hp-bar-fill" id="crmPipeHpBar" style="width: 100%;"></div>
+              </div>
+            </div>
+            <div class="photo-preview" id="crmPipePhotoPreview">
+              <span class="photo-preview-placeholder">👤</span>
+            </div>
+            <button type="button" class="photo-upload-btn" id="crmPipePhotoBtn">Upload Photo</button>
+            <button type="button" class="photo-remove-btn" id="crmPipePhotoRemove" style="display: none;">Remove</button>
+            <input type="file" id="crmPipePhotoInput" accept="image/*" style="display: none;">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="crmPipeName">Lead Name</label>
+          <input type="text" id="crmPipeName" placeholder="e.g., Jane Doe">
+        </div>
+        <div class="form-group">
+          <label for="crmPipeLocation">Location</label>
+          <input type="text" id="crmPipeLocation" placeholder="e.g., Denver, USA">
+        </div>
+        <div class="form-group">
+          <label for="crmPipeCompany">Company</label>
+          <input type="text" id="crmPipeCompany" placeholder="e.g., Acme Corp">
+        </div>
+        <div class="form-group">
+          <label for="crmPipeEmail">Email</label>
+          <input type="email" id="crmPipeEmail" placeholder="e.g., jane@acme.com">
+        </div>
+        <div class="form-group">
+          <label for="crmPipePhone">Phone</label>
+          <input type="tel" id="crmPipePhone" placeholder="e.g., (555) 987-6543">
+        </div>
+        <div class="form-group">
+          <label for="crmPipeStage">Pipeline Stage</label>
+          <select id="crmPipeStage" class="modal-select">
+            <option value="1">1. Lead</option>
+            <option value="2">2. Contacted</option>
+            <option value="3">3. Proposal</option>
+            <option value="4">4. Negotiation</option>
+            <option value="5">5. Closed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="crmPipeValue">Deal Value ($)</label>
+          <input type="number" id="crmPipeValue" placeholder="e.g., 50000">
+        </div>
+        <div class="form-group">
+          <label for="crmPipeNotes">Notes</label>
+          <textarea id="crmPipeNotes" rows="4" placeholder="Meeting notes, follow-up items, etc..."></textarea>
+        </div>
+        <div class="form-group">
+          <div class="file-attachments-container">
+            <div class="file-attachments-header">
+              <span class="file-attachments-title">ATTACHMENTS</span>
+              <button type="button" class="attach-file-btn" id="crmPipeAttachBtn">+ Attach File</button>
+              <input type="file" id="crmPipeFileInput" multiple style="display: none;">
+            </div>
+            <div class="file-attachments-list" id="crmPipeFilesList">
+              <div class="no-files-message">No files attached</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="saveCrmPipe" class="btn btn-primary">Add Lead</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admiral Chat Modal -->
+  <div id="admiralChatModal" class="modal">
+    <div class="modal-content admiral-chat-modal">
+      <div class="modal-header">
+        <div class="admiral-chat-header">
+          <img src="Assets/Admiral.png" class="admiral-avatar-modal" alt="Admiral">
+          <span class="admiral-chat-title">ADMIRAL</span>
+        </div>
+        <button class="close-btn" id="closeAdmiralChatModal">&times;</button>
+      </div>
+      <div class="modal-body admiral-chat-body">
+        <div class="chat-messages" id="admiralChatMessages">
+          <!-- Messages will be cloned from main chat -->
+        </div>
+        <div class="chat-input-area admiral-popup-input-area">
+          <textarea class="chat-input chat-textarea admiral-popup-textarea" id="admiralChatInput" placeholder="Ask me anything..." rows="6"></textarea>
+          <div class="chat-buttons">
+            <button class="chat-upload-btn" id="admiralChatUploadBtn">UPLOAD</button>
+            <button class="chat-send-btn" id="admiralChatSendBtn">SEND</button>
+          </div>
+          <input type="file" id="admiralChatFileInput" style="display: none;" multiple accept="image/*,.pdf,.txt,.doc,.docx,.xls,.xlsx,.csv">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transcribe Modal -->
+  <div id="transcribeModal" class="modal">
+    <div class="modal-content transcribe-modal">
+      <div class="modal-header">
+        <h2>🎙️ Transcribe Recording</h2>
+        <button class="close-btn" id="closeTranscribeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Select Recording</label>
+          <div id="recordingsListModal" class="recordings-selection">
+            <div class="no-recordings-message">No recordings available</div>
+          </div>
+        </div>
+        <div id="transcriptionResult" class="transcription-result" style="display: none;">
+          <div class="transcription-header">📝 Transcription</div>
+          <div id="transcriptionText" class="transcription-text"></div>
+          <button id="saveTranscriptionBtn" class="btn btn-primary" style="margin-top: 15px;">Save Transcription</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="startTranscribeBtn" class="btn btn-primary" disabled>Start Transcription</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timezone Selector Modal -->
+  <div id="timezoneModal" class="modal">
+    <div class="modal-content timezone-modal">
+      <div class="modal-header">
+        <h2>🌍 Select Timezone</h2>
+        <button class="close-btn" id="closeTimezoneModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Search City</label>
+          <input type="text" id="timezoneSearch" class="modal-input" placeholder="Type city name..." autocomplete="off">
+        </div>
+        <!-- Manual UTC Offset Selector -->
+        <div class="utc-offset-section">
+          <div class="section-label">MANUAL UTC OFFSET</div>
+          <div class="utc-offset-selector">
+            <select id="utcOffsetSelect" class="utc-offset-dropdown">
+              <option value="">-- Select UTC Offset --</option>
+              <option value="-12">UTC-12:00 (Baker Island)</option>
+              <option value="-11">UTC-11:00 (Samoa)</option>
+              <option value="-10">UTC-10:00 (Hawaii)</option>
+              <option value="-9.5">UTC-09:30 (Marquesas)</option>
+              <option value="-9">UTC-09:00 (Alaska)</option>
+              <option value="-8">UTC-08:00 (Pacific)</option>
+              <option value="-7">UTC-07:00 (Mountain)</option>
+              <option value="-6">UTC-06:00 (Central)</option>
+              <option value="-5">UTC-05:00 (Eastern)</option>
+              <option value="-4">UTC-04:00 (Atlantic)</option>
+              <option value="-3.5">UTC-03:30 (Newfoundland)</option>
+              <option value="-3">UTC-03:00 (Argentina/Brazil)</option>
+              <option value="-2">UTC-02:00 (Mid-Atlantic)</option>
+              <option value="-1">UTC-01:00 (Azores)</option>
+              <option value="0">UTC+00:00 (London/GMT)</option>
+              <option value="1">UTC+01:00 (Central Europe)</option>
+              <option value="2">UTC+02:00 (Eastern Europe)</option>
+              <option value="3">UTC+03:00 (Moscow/Arabia)</option>
+              <option value="3.5">UTC+03:30 (Iran)</option>
+              <option value="4">UTC+04:00 (Dubai/Gulf)</option>
+              <option value="4.5">UTC+04:30 (Afghanistan)</option>
+              <option value="5">UTC+05:00 (Pakistan)</option>
+              <option value="5.5">UTC+05:30 (India)</option>
+              <option value="5.75">UTC+05:45 (Nepal)</option>
+              <option value="6">UTC+06:00 (Bangladesh)</option>
+              <option value="6.5">UTC+06:30 (Myanmar)</option>
+              <option value="7">UTC+07:00 (Thailand/Vietnam)</option>
+              <option value="8">UTC+08:00 (China/Singapore)</option>
+              <option value="8.75">UTC+08:45 (Australia CW)</option>
+              <option value="9">UTC+09:00 (Japan/Korea)</option>
+              <option value="9.5">UTC+09:30 (Australia Central)</option>
+              <option value="10">UTC+10:00 (Australia East)</option>
+              <option value="10.5">UTC+10:30 (Lord Howe)</option>
+              <option value="11">UTC+11:00 (Solomon Islands)</option>
+              <option value="12">UTC+12:00 (New Zealand)</option>
+              <option value="12.75">UTC+12:45 (Chatham Islands)</option>
+              <option value="13">UTC+13:00 (Tonga)</option>
+              <option value="14">UTC+14:00 (Line Islands)</option>
+            </select>
+            <button class="utc-apply-btn" id="applyUtcOffset">APPLY</button>
+          </div>
+        </div>
+        <div id="recentCitiesSection" class="recent-cities-section">
+          <div class="section-label">QUICK ACCESS</div>
+          <div class="timezone-list recent-cities-list" id="recentCitiesList">
+            <!-- Local Time button and recent cities will be populated here -->
+          </div>
+        </div>
+        <div id="searchResultsSection" class="search-results-section" style="display: none;">
+          <div class="section-label">SEARCH RESULTS <span id="searchResultsCount"></span></div>
+          <div class="timezone-list" id="timezoneList">
+            <!-- Search results will be populated here -->
+          </div>
+        </div>
+        <div class="timezone-hint">
+          <p>🔍 Search from 500+ cities worldwide</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Link Modal -->
+  <div class="confirm-modal-overlay" id="addLinkModalOverlay">
+    <div class="confirm-modal add-link-modal">
+      <div class="confirm-modal-header">
+        <span class="confirm-modal-icon">🔗</span>
+        <span class="confirm-modal-title">Add Link</span>
+      </div>
+      <div class="confirm-modal-body">
+        <div class="add-link-form">
+          <div class="form-group">
+            <label for="addLinkName">Link Name</label>
+            <input type="text" id="addLinkName" class="add-link-input" placeholder="e.g., QuickBooks Invoice, Google Sheet">
+          </div>
+          <div class="form-group">
+            <label for="addLinkUrl">URL</label>
+            <input type="url" id="addLinkUrl" class="add-link-input" placeholder="https://...">
+          </div>
+        </div>
+      </div>
+      <div class="confirm-modal-actions">
+        <button class="confirm-modal-btn confirm-modal-cancel" id="addLinkCancel">Cancel</button>
+        <button class="confirm-modal-btn confirm-modal-confirm add-link-save" id="addLinkSave">Add Link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Confirmation Modal -->
+  <div class="confirm-modal-overlay" id="confirmModalOverlay">
+    <div class="confirm-modal">
+      <div class="confirm-modal-header">
+        <span class="confirm-modal-icon" id="confirmModalIcon">⚠️</span>
+        <span class="confirm-modal-title" id="confirmModalTitle">Confirm Action</span>
+      </div>
+      <div class="confirm-modal-body">
+        <p class="confirm-modal-message" id="confirmModalMessage">Are you sure you want to proceed?</p>
+        <p class="confirm-modal-details" id="confirmModalDetails"></p>
+      </div>
+      <div class="confirm-modal-actions">
+        <button class="confirm-modal-btn confirm-modal-cancel" id="confirmModalCancel">Cancel</button>
+        <button class="confirm-modal-btn confirm-modal-confirm" id="confirmModalConfirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js'></script>
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <script src="claude-api-config.js"></script>
+  <script src="timezone-cities.js"></script>
+  <script src="airport-database.js"></script>
+  <script src="flight-tracker.js"></script>
+  <script src="map-integration.js"></script>
+  <script src="call-center-module.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="email-module.js"></script>
+</body>
+</html>

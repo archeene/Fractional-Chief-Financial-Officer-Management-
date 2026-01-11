@@ -1,0 +1,137 @@
+═══════════════════════════════════════════════════════════════
+  START FRESH - CLEAN GIT HISTORY
+═══════════════════════════════════════════════════════════════
+
+The secrets are in your git history. We need to delete everything
+and start over with a clean slate.
+
+
+═══════════════════════════════════════════════════════════════
+  STEP 1: DELETE LOCAL GIT HISTORY
+═══════════════════════════════════════════════════════════════
+
+cd "C:\Users\sirto\Downloads\Coding\Vibe\Multi Calendar"
+
+rmdir /s /q .git
+
+(This deletes the local git history with secrets)
+
+
+═══════════════════════════════════════════════════════════════
+  STEP 2: DELETE GITHUB REPOSITORY
+═══════════════════════════════════════════════════════════════
+
+1. Go to: https://github.com/archeene/Google-Outlook-MultiCalendar/settings
+
+2. Scroll to the very bottom
+
+3. Click "Delete this repository"
+
+4. Type: archeene/Google-Outlook-MultiCalendar
+
+5. Click "I understand the consequences, delete this repository"
+
+
+═══════════════════════════════════════════════════════════════
+  STEP 3: CREATE NEW REPOSITORY ON GITHUB
+═══════════════════════════════════════════════════════════════
+
+1. Go to: https://github.com/new
+
+2. Repository name: Google-Outlook-MultiCalendar
+
+3. Description: Multi-calendar management app with Google Calendar integration
+
+4. Choose: Public (for portfolio)
+
+5. DO NOT check "Add a README file"
+
+6. DO NOT check "Add .gitignore"
+
+7. Click "Create repository"
+
+
+═══════════════════════════════════════════════════════════════
+  STEP 4: PUSH CLEAN CODE TO GITHUB
+═══════════════════════════════════════════════════════════════
+
+Copy and paste these commands:
+
+cd "C:\Users\sirto\Downloads\Coding\Vibe\Multi Calendar"
+
+git init
+
+git add .
+
+git commit -m "Initial commit - Multi Calendar app with Google integration"
+
+git branch -M main
+
+git remote add origin https://github.com/archeene/Google-Outlook-MultiCalendar.git
+
+git push -u origin main
+
+
+═══════════════════════════════════════════════════════════════
+  THIS WILL WORK BECAUSE:
+═══════════════════════════════════════════════════════════════
+
+✅ .gitignore now excludes oauth-credentials.json
+✅ BUILD_EXE_GUIDE.md has placeholders (not real credentials)
+✅ DEPLOYMENT_CHECKLIST.md has placeholders (not real credentials)
+✅ No git history with secrets
+✅ Fresh start = clean commit
+
+
+═══════════════════════════════════════════════════════════════
+  AFTER PUSHING - VERIFY
+═══════════════════════════════════════════════════════════════
+
+1. Visit: https://github.com/archeene/Google-Outlook-MultiCalendar
+
+2. Press 't' to search files
+
+3. Search for: oauth-credentials.json
+   Result: Should NOT be found ✅
+
+4. Search for: GOCSPX
+   Result: 0 code results ✅
+
+5. Files visible should include:
+   ✅ app.js
+   ✅ main.js
+   ✅ server.js
+   ✅ README.md
+   ✅ BUILD_EXE_GUIDE.md (with placeholders)
+   ❌ oauth-credentials.json (should be hidden)
+
+
+═══════════════════════════════════════════════════════════════
+  ALL COMMANDS IN ONE GO
+═══════════════════════════════════════════════════════════════
+
+Step 1 - Delete local git:
+cd "C:\Users\sirto\Downloads\Coding\Vibe\Multi Calendar"
+rmdir /s /q .git
+
+Step 2 - Delete GitHub repo (do this manually in browser)
+
+Step 3 - Create new GitHub repo (do this manually in browser)
+
+Step 4 - Push clean code:
+cd "C:\Users\sirto\Downloads\Coding\Vibe\Multi Calendar"
+git init
+git add .
+git commit -m "Initial commit - Multi Calendar app with Google integration"
+git branch -M main
+git remote add origin https://github.com/archeene/Google-Outlook-MultiCalendar.git
+git push -u origin main
+
+
+═══════════════════════════════════════════════════════════════
+  DONE! ✅
+═══════════════════════════════════════════════════════════════
+
+Your portfolio will be clean and professional with no secrets!
+
+═══════════════════════════════════════════════════════════════

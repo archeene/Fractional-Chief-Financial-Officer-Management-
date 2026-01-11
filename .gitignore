@@ -1,0 +1,66 @@
+# Secrets - NEVER commit these!
+oauth-credentials.json
+token.json
+service-account-key.json
+quickbooks-token.json
+storage-settings.json
+gmail-integration-*.json
+client_secret_*.json
+*.env
+.env
+.env.*
+
+# User data - contains personal files
+UserFiles/
+
+# Documentation that might contain example credentials
+DEPLOYMENT_CHECKLIST.md
+SEND_TO_CLIENT.txt
+PACKAGE_FOR_CLIENT.txt
+QUICK_REFERENCE.txt
+INSTRUCTIONS_FOR_CLIENT.txt
+CLIENT_INSTALL_INSTRUCTIONS.txt
+GITHUB_UPLOAD_GUIDE.txt
+GIT_COMMANDS.txt
+
+# Build outputs
+dist/
+build/
+node_modules/
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.rpm
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+nul
+
+# Large binary files
+models/
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

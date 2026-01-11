@@ -1,0 +1,102 @@
+═══════════════════════════════════════════════════════════════
+  FIX: GitHub Blocked Your Push (Secret Detection)
+═══════════════════════════════════════════════════════════════
+
+WHAT HAPPENED:
+GitHub detected your OAuth credentials in documentation files and
+blocked the push to protect you.
+
+I'VE ALREADY FIXED THE FILES:
+✅ BUILD_EXE_GUIDE.md - Replaced real credentials with placeholders
+✅ DEPLOYMENT_CHECKLIST.md - Replaced real credentials with placeholders
+✅ Updated .gitignore to exclude internal docs
+
+
+═══════════════════════════════════════════════════════════════
+  RUN THESE COMMANDS TO FIX AND PUSH
+═══════════════════════════════════════════════════════════════
+
+Copy and paste these commands one by one:
+
+cd "C:\Users\sirto\Downloads\Coding\Vibe\Multi Calendar"
+
+git add .
+
+git commit -m "Remove credentials from documentation files"
+
+git push -u origin main --force
+
+
+═══════════════════════════════════════════════════════════════
+  WHAT THIS DOES
+═══════════════════════════════════════════════════════════════
+
+1. Stages the fixed files (credentials removed)
+2. Creates a new commit with the safe versions
+3. Force pushes to GitHub (overwrites the commit with secrets)
+
+
+═══════════════════════════════════════════════════════════════
+  ALTERNATIVE: Start Fresh (If Above Doesn't Work)
+═══════════════════════════════════════════════════════════════
+
+If force push fails, delete everything and start over:
+
+1. Delete the GitHub repository:
+   - Go to: https://github.com/archeene/Google-Outlook-MultiCalendar/settings
+   - Scroll to bottom → "Delete this repository"
+   - Confirm deletion
+
+2. Delete local .git folder:
+   cd "C:\Users\sirto\Downloads\Coding\Vibe\Multi Calendar"
+   rmdir /s .git
+
+3. Create new repository on GitHub:
+   - Go to: https://github.com/new
+   - Name: Google-Outlook-MultiCalendar
+   - Click "Create repository"
+
+4. Push fresh code:
+   cd "C:\Users\sirto\Downloads\Coding\Vibe\Multi Calendar"
+   git init
+   git add .
+   git commit -m "Initial commit - Multi Calendar app"
+   git branch -M main
+   git remote add origin https://github.com/archeene/Google-Outlook-MultiCalendar.git
+   git push -u origin main
+
+
+═══════════════════════════════════════════════════════════════
+  VERIFY AFTER PUSHING
+═══════════════════════════════════════════════════════════════
+
+1. Visit: https://github.com/archeene/Google-Outlook-MultiCalendar
+
+2. Search for: GOCSPX
+   ✅ Should find: 0 results
+
+3. Search for: 526775279840
+   ✅ Should find: 0 results
+
+4. Check files list:
+   ✅ oauth-credentials.json should NOT be visible
+
+
+═══════════════════════════════════════════════════════════════
+  IMPORTANT SECURITY NOTE
+═══════════════════════════════════════════════════════════════
+
+⚠️ Your credentials were EXPOSED in the git history (even though the
+   push was blocked). To be extra safe, consider:
+
+1. Rotating your OAuth credentials:
+   - Go to: https://console.cloud.google.com/apis/credentials
+   - Delete the old OAuth client ID
+   - Create a new one
+   - Update your local oauth-credentials.json
+   - Rebuild the .exe for your client
+
+2. Or just proceed if you trust the push was blocked in time.
+
+
+═══════════════════════════════════════════════════════════════

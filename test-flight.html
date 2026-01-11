@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flight Tracker Test</title>
+  <style>
+    body {
+      background: #0a0e27;
+      color: #00ff41;
+      font-family: monospace;
+      padding: 20px;
+    }
+    .test-result {
+      background: rgba(0, 255, 65, 0.1);
+      border: 2px solid #00ff41;
+      padding: 15px;
+      margin: 10px 0;
+    }
+    button {
+      background: #00ff41;
+      border: none;
+      color: #0a0e27;
+      padding: 10px 20px;
+      font-family: monospace;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #00cc33;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛫 Flight Tracker Test</h1>
+
+  <h2>Test Your Sunday Flight Event</h2>
+  <p>Open your calendar, find your Sunday flight event, and copy the title here:</p>
+  <input type="text" id="flightTitle" placeholder="e.g., Flight AA123: JFK → LAX" style="width: 500px; padding: 10px; background: rgba(0,255,65,0.1); border: 2px solid #00ff41; color: #00ff41; font-family: monospace;">
+  <br><br>
+  <button onclick="testFlightExtraction()">Test Flight Number Extraction</button>
+  <button onclick="testAirportExtraction()">Test Airport Code Extraction</button>
+
+  <div id="results"></div>
+
+  <script src="flight-tracker.js"></script>
+  <script>
+    const tracker = new FlightTracker();
+
+    function testFlightExtraction() {
+      const title = document.getElementById('flightTitle').value;
+      const mockEvent = {
+        title: title,
+        extendedProps: {
+          description: '',
+          location: ''
+        }
+      };
+
+      const flightNumbers = tracker.extractFlightNumber(mockEvent);
+
+      const results = document.getElementById('results');
+      results.innerHTML += `
+        <div class="test-result">
+          <h3>Flight Number Extraction Test</h3>
+          <p><strong>Input:</strong> ${title}</p>
+          <p><strong>Found Flight Numbers:</strong> ${flightNumbers ? flightNumbers.join(', ') : 'NONE'}</p>
+          <p><strong>Status:</strong> ${flightNumbers ? '✅ SUCCESS' : '❌ FAILED - Add flight number like AA123'}</p>
+        </div>
+      `;
+    }
+
+    function testAirportExtraction() {
+      const title = document.getElementById('flightTitle').value;
+      const mockEvent = {
+        title: title,
+        extendedProps: {
+          description: '',
+          location: ''
+        }
+      };
+
+      const route = tracker.extractAirportCodes(mockEvent);
+
+      const results = document.getElementById('results');
+      results.innerHTML += `
+        <div class="test-result">
+          <h3>Airport Code Extraction Test</h3>
+          <p><strong>Input:</strong> ${title}</p>
+          <p><strong>Origin:</strong> ${route?.origin || 'NOT FOUND'}</p>
+          <p><strong>Destination:</strong> ${route?.destination || 'NOT FOUND'}</p>
+          <p><strong>Origin Airport:</strong> ${route?.origin && tracker.airports[route.origin] ? tracker.airports[route.origin].name : 'Unknown'}</p>
+          <p><strong>Destination Airport:</strong> ${route?.destination && tracker.airports[route.destination] ? tracker.airports[route.destination].name : 'Unknown'}</p>
+          <p><strong>Status:</strong> ${route ? '✅ SUCCESS' : '❌ FAILED - Add airport codes like JFK → LAX'}</p>
+        </div>
+      `;
+    }
+  </script>
+
+  <hr>
+  <h2>Quick Examples to Test:</h2>
+  <ul>
+    <li><button onclick="document.getElementById('flightTitle').value='Flight AA123: JFK → LAX'">Flight AA123: JFK → LAX</button></li>
+    <li><button onclick="document.getElementById('flightTitle').value='UA456 NYC-SFO'">UA456 NYC-SFO</button></li>
+    <li><button onclick="document.getElementById('flightTitle').value='Business Trip to London'">Business Trip to London (should FAIL)</button></li>
+    <li><button onclick="document.getElementById('flightTitle').value='Delta DL789 ORD → DXB'">Delta DL789 ORD → DXB</button></li>
+  </ul>
+</body>
+</html>

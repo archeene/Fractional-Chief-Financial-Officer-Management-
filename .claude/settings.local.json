@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(npm run server:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(node test-api.js:*)",
+      "Bash(node test-venice.js:*)",
+      "Bash(node -c:*)",
+      "Bash(comm:*)",
+      "Bash(taskkill:*)",
+      "Bash(timeout /t:*)",
+      "Bash(node test-flight-api.js:*)",
+      "Bash(node test-server-api.js:*)",
+      "Bash(node:*)",
+      "Bash(tasklist /FI \"IMAGENAME eq node.exe\" /FO CSV)",
+      "Bash(dir:*)",
+      "Bash(npm start)",
+      "Bash(tasklist:*)",
+      "Bash(powershell:*)",
+      "Bash(python -m pip:*)",
+      "Bash(python:*)",
+      "Bash(del \"C:\\\\Users\\\\sirto\\\\Downloads\\\\Coding\\\\Business\\\\The Hull\\\\UserFiles\\\\Transcriptions\\\\Text Transcripts\\\\Call_Recording_2026-01-10_16-44-21.txt\")",
+      "Bash(del \"C:\\\\Users\\\\sirto\\\\Downloads\\\\Coding\\\\Business\\\\The Hull\\\\UserFiles\\\\Transcriptions\\\\Text Transcripts\\\\Call_Recording_2026-01-11_17-01-05.txt\")",
+      "Bash(npm search:*)",
+      "Bash(npm install:*)",
+      "Bash(del \"C:\\\\Users\\\\sirto\\\\Downloads\\\\Coding\\\\Business\\\\The Hull\\\\test-whisper.js\")",
+      "Bash(git remote set-url:*)",
+      "Bash(git add:*)",
+      "Bash(del nul)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nTHE HULL - Business Battlestation\n\nFeatures:\n- Google Calendar, Gmail, Sheets integration\n- QuickBooks accounting integration\n- CRM with Clients, Employees, Leads management\n- AI Chat powered by Venice API\n- Voice transcription with Whisper.cpp\n- Flight tracking and map integration\n- Call center module\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)"
+    ]
+  }
+}
